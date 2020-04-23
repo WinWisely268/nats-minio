@@ -1,0 +1,20 @@
+syntax = "proto3";
+option go_package = ".;pb";
+
+import "google/protobuf/empty.proto";
+
+message Event {
+    string service_id = 1;
+    string channel = 2;
+    string type = 3;
+    string aggregate_id = 4;
+    string aggregate_type = 5;
+    string event_id = 6;
+    string event_type = 7;
+    string originator = 8;
+    string event_data = 9;
+}
+
+service EventService {
+    rpc PrintEvent(Event) returns (google.protobuf.Empty) {};
+}
