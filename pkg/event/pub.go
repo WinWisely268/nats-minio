@@ -2,10 +2,10 @@ package event
 
 import (
 	"encoding/json"
+	uuid "github.com/hashicorp/go-uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
-	uuid "github.com/hashicorp/go-uuid"
+	"github.com/WinWisely268/nats-minio/pkg/log"
 	"sync"
 	"time"
 
@@ -15,7 +15,7 @@ import (
 type (
 	Conf struct {
 		ClusterID string
-		Log *log.Logger
+		Log       *log.Logger
 		ID        string
 		ClientID  string
 	}
@@ -23,29 +23,29 @@ type (
 	Publisher struct {
 		clusterID string
 		id        string
-		l *log.Logger
+		l         *log.Logger
 		m         sync.Mutex
 		conn      stan.Conn
 		acb       func(string, error)
 	}
-	
+
 	Event struct {
-		ServiceId string `json:"serviceId"`
-		Channel string `json:"channel"`
-		AggregateId string `json:"aggregateId"`
+		ServiceId     string `json:"serviceId"`
+		Channel       string `json:"channel"`
+		AggregateId   string `json:"aggregateId"`
 		AggregateType string `json:"aggregateType"`
-		EventId string `json:"eventId"`
-		EventType string `json:"eventType"`
-		EventData []byte `json:"eventData"`
-		Originator string `json:"originator"`
-		CreatedAt string `json:"createdAt"`
+		EventId       string `json:"eventId"`
+		EventType     string `json:"eventType"`
+		EventData     []byte `json:"eventData"`
+		Originator    string `json:"originator"`
+		CreatedAt     string `json:"createdAt"`
 	}
 )
 
 func New(c *Conf) *Publisher {
 	return &Publisher{
 		clusterID: c.ClusterID,
-		l: c.Log,
+		l:         c.Log,
 		id:        c.ID,
 	}
 }
@@ -58,7 +58,7 @@ func (p *Publisher) Connect(opts ...stan.Option) (err error) {
 	if err != nil {
 		return err
 	}
-	if p.conn, err = stan.Connect(p.clusterID , p.id + "-" + newID, opts...); err != nil {
+	if p.conn, err = stan.Connect(p.clusterID, p.id+"-"+newID, opts...); err != nil {
 		return nil
 	}
 	return nil

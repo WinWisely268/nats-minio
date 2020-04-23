@@ -49,7 +49,7 @@ help:
 
 proto-init:
 	@type -p protoc > /dev/null 2>&1 || echo 'Please install protobuf first according to your package manager'
-	@go get -u google.golang.org/protobuf/cmd/protoc-gen-go
+	@go get -u github.com/golang/protobuf/protoc-gen-go
 
 modules-install:
 	@go mod tidy
@@ -57,6 +57,6 @@ modules-install:
 
 ## Compiles protobuf
 proto-go: proto-init modules-install
-	@protoc -I vendor/ -I api/ api/*.proto --go_out=pkg/api/
+	@protoc -I vendor/ -I api/ api/*.proto --go_out=plugins=grpc:pkg/api/
 
 

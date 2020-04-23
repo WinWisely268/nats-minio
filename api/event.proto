@@ -16,5 +16,5 @@ message Event {
 }
 
 service EventService {
-    rpc PrintEvent(Event) returns (google.protobuf.Empty) {};
+    rpc PrintEvent(Event) returns (google.protobuf.Empty) {}
 }

@@ -1,25 +1,25 @@
 package event
 
 import (
-	"log"
 	"github.com/hashicorp/go-uuid"
 	"github.com/nats-io/stan.go"
+	"log"
 	"sync"
 )
 
 type Subscriber struct {
 	clusterID string
-	id string
-	l *log.Logger
-	m sync.Mutex
-	conn stan.Conn
-	sub stan.Subscription
+	id        string
+	l         *log.Logger
+	m         sync.Mutex
+	conn      stan.Conn
+	sub       stan.Subscription
 }
 
 func NewSubscriber(c *Conf) *Subscriber {
 	return &Subscriber{
 		clusterID: c.ClusterID,
-		id: c.ClientID,
+		id:        c.ClientID,
 	}
 }
 
@@ -33,8 +33,8 @@ func (s *Subscriber) Connect(opts ...stan.Option) (err error) {
 	opts = append(opts, stan.SetConnectionLostHandler(func(_ stan.Conn, err error) {
 		s.l.Printf("Connection to NATS server lost: %v", err)
 	}))
-	if s.conn, err = stan.Connect(s.clusterID ,
-		s.id + "-" + newID, opts...); err != nil {
+	if s.conn, err = stan.Connect(s.clusterID,
+		s.id+"-"+newID, opts...); err != nil {
 		s.l.Printf("nats connectivity status is DISCONNECTED: %v", err)
 		return err
 	}
